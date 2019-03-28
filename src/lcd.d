@@ -23,32 +23,17 @@ enum Orientation
 
 void init()
 {
-    //RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC, ENABLE);
-    RCC.AHB1ENR |= RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC;
+    RCC.AHB1ENR |= RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC; // Enable power to GPIOE and GPIOC
     
-    /*GPIO_InitTypeDef  GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIO_Init(GPIOC, &GPIO_InitStructure);*/
-
-    /*GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);*/
+    GPIOC.MODER |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2)); // pins 7,8,9,10 as output
+    GPIOC.PUPDR |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2)); // pull up
     
-    GPIOC.MODER |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
-    //GPIOC.OSPEEDR |= (0 << (15 * 2));
-    //GPIOC.OTYPER |=  (0 << 15)
-    GPIOC.PUPDR |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
-    
-    GPIOE.MODER = 0xffff;// 0b1111111111111111;// (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
-    //GPIOD.OSPEEDR |= (0 << (15 * 2));
-    //GPIOD.OTYPER |=  (0 << 15)
-    GPIOE.PUPDR = 0x55555555;//0b01010101010101010101010101010101;// (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
+    GPIOE.MODER = 0x55555555; // all pins as output
+    GPIOE.PUPDR = 0x55555555; // pull up
     
     reset();
 
+    //6
     set_reg(0XF1);
     set_data(0x36);
     set_data(0x04);
@@ -57,6 +42,7 @@ void init()
     set_data(0X0F);
     set_data(0x8F);
 
+    //9
     set_reg(0XF2);
     set_data(0x18);
     set_data(0xA3);
@@ -68,29 +54,35 @@ void init()
     set_data(0x10);
     set_data(0x00);
 
+    //2
     set_reg(0XF8);
     set_data(0x21);
     set_data(0x04);
 
+    //2
     set_reg(0XF9);
     set_data(0x00);
     set_data(0x08);
 
+    //1
     set_reg(0x36);
     set_data(0x08); // set memorty access
 
     //set_reg(0xB4);
     //set_data(0x00);
 
+    //1
     set_reg(0xC1);
     set_data(0x41); // set power control 2
 
+    //4
     set_reg(0xC5);
     set_data(0x00);
     set_data(0x91); // VCOM voltage
     set_data(0x80);
     set_data(0x00);
 
+    //15
     set_reg(0xE0); // set gamma
     set_data(0x0F);
     set_data(0x1F);
@@ -108,6 +100,7 @@ void init()
     set_data(0x0D);
     set_data(0x00);
 
+    //15
     set_reg(0xE1); // set negative gamma
     set_data(0x0F);
     set_data(0x32);
@@ -125,16 +118,20 @@ void init()
     set_data(0x20);
     set_data(0x00);
 
+    //1
     set_reg(0x3A);
     set_data(0x55); // set 16bits / piexel
 
+    //0
     set_reg(0x11); // load default registers
 
+    //1
     set_reg(0x36);
     set_data(0x28); // set memorty access
 
     delay.mili(120);
 
+    //0
     set_reg(0x29); // display on
 
     set_orientation(Orientation.portrait);
@@ -160,13 +157,13 @@ void write(ushort data)
 
 void set_reg(ushort data)
 {
-    GPIOC.ODR &= ~(1 << 10); // clear RS
+    GPIOC.ODR &= ~(1 << 8); // clear RS
     write(data);
 }
 
 void set_data(ushort data)
 {
-    GPIOC.ODR = 1 << 10; // set RS
+    GPIOC.ODR |= 1 << 8; // set RS
     write(data);
 }
 
@@ -185,8 +182,8 @@ void draw_pixel(ushort x, ushort y, ushort color)
 void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
 {
     set_window(x, y, cast(ushort)(w - x), cast(ushort)(h - y));
-    GPIOC.ODR = 1 << 10; // set RS
-    for (uint i = 0; i < Width * Height; i++)
+    GPIOC.ODR |= 1 << 8; // set RS
+    for (uint i = 0; i < w * h; i++)
     {
         write(color);
     }
@@ -194,12 +191,13 @@ void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
 
 void clear(ushort color)
 {
-    set_window(0, 0, Width - 1, Height - 1);
-    GPIOC.ODR = 1 << 10; // set RS
+    fill_rect(0, 0, Width - 1, Height - 1, color);
+    /*set_window(0, 0, Width - 1, Height - 1);
+    GPIOC.ODR |= 1 << 10; // set RS
     for (uint i = 0; i < Width * Height; i++)
     {
         write(color);
-    }
+    }*/
 }
 
 void set_window(ushort x0, ushort y0, ushort x1, ushort y1)
@@ -207,16 +205,16 @@ void set_window(ushort x0, ushort y0, ushort x1, ushort y1)
     //set_reg(lcddev.setxcmd);
     set_reg(0x2A);
     set_data(x0 >> 8);
-    set_data(x0);
+    set_data(x0 & 0xff);
     set_data(x1 >> 8);
-    set_data(x1);
+    set_data(x1 & 0xff);
 
     //set_reg(lcddev.setycmd);
     set_reg(0x2B);
     set_data(y0 >> 8);
-    set_data(y0);
+    set_data(y0 & 0xff);
     set_data(y1 >> 8);
-    set_data(y1);
+    set_data(y1 & 0xff);
 
     //set_reg(lcddev.wramcmd);
     set_reg(0x2C);
