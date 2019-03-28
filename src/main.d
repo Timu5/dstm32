@@ -7,7 +7,7 @@ static import delay;
 extern(C) int main()
 {
     delay.init();
-	lcd.init()
+    lcd.init();
 	
     RCC.AHB1ENR |= RCC_AHB1Periph_GPIOD;
 

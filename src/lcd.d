@@ -182,13 +182,23 @@ void draw_pixel(ushort x, ushort y, ushort color)
     set_data(color);
 }
 
-void clear(ushort Color)
+void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
+{
+    set_window(x, y, cast(ushort)(w - x), cast(ushort)(h - y));
+    GPIOC.ODR = 1 << 10; // set RS
+    for (uint i = 0; i < Width * Height; i++)
+    {
+        write(color);
+    }
+}
+
+void clear(ushort color)
 {
     set_window(0, 0, Width - 1, Height - 1);
     GPIOC.ODR = 1 << 10; // set RS
     for (uint i = 0; i < Width * Height; i++)
     {
-        write(Color);
+        write(color);
     }
 }
 

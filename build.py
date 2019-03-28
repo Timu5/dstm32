@@ -9,7 +9,7 @@ if retcode != 0:
     print("Compilation fail!")
     quit()
 
-retcode = subprocess.call("wsl arm-none-eabi-ld -T stm32f4_flash.ld --gc-sections src.o -o build/main.elf build/main.o build/startup_stm32f4xx.o build/system_stm32f4xx.o", shell=True)
+retcode = subprocess.call("wsl arm-none-eabi-ld -T stm32f4_flash.ld --gc-sections -o build/main.elf build/main.o build/startup_stm32f4xx.o build/system_stm32f4xx.o", shell=True)
 if retcode != 0:
     print("Linkning fail!")
     quit()
