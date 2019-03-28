@@ -8,25 +8,25 @@ enum Height = 480;
 
 enum Color
 {
-	white = 0xFFFF,
-	black = 0x0000
-	// TODO
+    white = 0xFFFF,
+    black = 0x0000
+    // TODO
 }
 
 enum Orientation
 {
-	portrait, 
-	landscape,
-	reverse_portrait,
-	reverse_landscape
+    portrait, 
+    landscape,
+    reverse_portrait,
+    reverse_landscape
 }
 
 void init()
 {
     //RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC, ENABLE);
-	RCC.AHB1ENR |= RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC;
-	
-	/*GPIO_InitTypeDef  GPIO_InitStructure;
+    RCC.AHB1ENR |= RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC;
+    
+    /*GPIO_InitTypeDef  GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
@@ -36,17 +36,17 @@ void init()
 
     /*GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
     GPIO_Init(GPIOE, &GPIO_InitStructure);*/
-	
-	GPIOC.MODER |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
-	//GPIOC.OSPEEDR |= (0 << (15 * 2));
-	//GPIOC.OTYPER |=  (0 << 15)
-	GPIOC.PUPDR |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
-	
-	GPIOE.MODER = 0xffff;// 0b1111111111111111;// (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
-	//GPIOD.OSPEEDR |= (0 << (15 * 2));
-	//GPIOD.OTYPER |=  (0 << 15)
-	GPIOE.PUPDR = 0x55555555;//0b01010101010101010101010101010101;// (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
-	
+    
+    GPIOC.MODER |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
+    //GPIOC.OSPEEDR |= (0 << (15 * 2));
+    //GPIOC.OTYPER |=  (0 << 15)
+    GPIOC.PUPDR |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
+    
+    GPIOE.MODER = 0xffff;// 0b1111111111111111;// (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
+    //GPIOD.OSPEEDR |= (0 << (15 * 2));
+    //GPIOD.OTYPER |=  (0 << 15)
+    GPIOE.PUPDR = 0x55555555;//0b01010101010101010101010101010101;// (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2));
+    
     reset();
 
     set_reg(0XF1);
@@ -151,29 +151,29 @@ void reset()
 
 void write(ushort data)
 {
-	GPIOC.ODR &= ~(1 << 9); // clear CS 
-	GPIOE.ODR = data;
-	GPIOC.ODR &= ~(1 << 7); // clear WR 
-	GPIOC.ODR |= 1 << 7;    // set WR 
-	GPIOC.ODR |= 1 << 9;    // set CS 
+    GPIOC.ODR &= ~(1 << 9); // clear CS 
+    GPIOE.ODR = data;
+    GPIOC.ODR &= ~(1 << 7); // clear WR 
+    GPIOC.ODR |= 1 << 7;    // set WR 
+    GPIOC.ODR |= 1 << 9;    // set CS 
 }
 
 void set_reg(ushort data)
 {
-	GPIOC.ODR &= ~(1 << 10); // clear RS
-	write(data);
+    GPIOC.ODR &= ~(1 << 10); // clear RS
+    write(data);
 }
 
 void set_data(ushort data)
 {
-	GPIOC.ODR = 1 << 10; // set RS
-	write(data);
+    GPIOC.ODR = 1 << 10; // set RS
+    write(data);
 }
 
 void write_reg(ushort reg, ushort data)
 {
-	set_reg(reg);
-	set_data(data);
+    set_reg(reg);
+    set_data(data);
 }
 
 void draw_pixel(ushort x, ushort y, ushort color)
@@ -185,7 +185,7 @@ void draw_pixel(ushort x, ushort y, ushort color)
 void clear(ushort Color)
 {
     set_window(0, 0, Width - 1, Height - 1);
-	GPIOC.ODR = 1 << 10; // set RS
+    GPIOC.ODR = 1 << 10; // set RS
     for (uint i = 0; i < Width * Height; i++)
     {
         write(Color);
@@ -208,13 +208,13 @@ void set_window(ushort x0, ushort y0, ushort x1, ushort y1)
     set_data(y1 >> 8);
     set_data(y1);
 
-	//set_reg(lcddev.wramcmd);
-	set_reg(0x2C);
+    //set_reg(lcddev.wramcmd);
+    set_reg(0x2C);
 }
 
 void set_cursor(ushort x, ushort y)
 {
-	set_window(x, y, x, y);
+    set_window(x, y, x, y);
 }
 
 void set_orientation(Orientation orientation)
@@ -224,7 +224,7 @@ void set_orientation(Orientation orientation)
     //lcddev.wramcmd = 0x2C;
 
     switch (orientation)
-	{
+    {
     case Orientation.portrait:
         write_reg(0x36, (1 << 6) | (1 << 3));//0 degree MY=0,MX=0,MV=0,ML=0,BGR=1,MH=0
         break;
@@ -238,6 +238,6 @@ void set_orientation(Orientation orientation)
         write_reg(0x36, (1 << 3) | (1 << 5) | (1 << 6) | (1 << 7));//270 degree MY=1,MX=0,MV=1,ML=0,BGR=1,MH=0
         break;
     default:
-		break;
+        break;
     }
 }

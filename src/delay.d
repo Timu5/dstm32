@@ -11,12 +11,12 @@ extern(C) void SysTick_Handler()
 
 void init()
 {
-	ticks = 0;
-	SysTick.Config(SystemCoreClock / 1000);
+    ticks = 0;
+    SysTick.Config(SystemCoreClock / 1000);
 }
 
 void mili(uint time)
 {
-	uint end = ticks.load() + time;
-	while(ticks < end) {}
+    uint end = ticks.load() + time;
+    while(ticks < end) {}
 }
