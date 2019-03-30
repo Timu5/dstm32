@@ -1,7 +1,7 @@
 module lcd;
 
 import stm32f4xx;
-import delay;
+static import delay;
 
 enum Width = 320;
 enum Height = 480;
@@ -181,7 +181,7 @@ void draw_pixel(ushort x, ushort y, ushort color)
 
 void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
 {
-    set_window(x, y, cast(ushort)(w - x), cast(ushort)(h - y));
+    set_window(x, y, cast(ushort)(x + w), cast(ushort)(y + h));
     GPIOC.ODR |= 1 << 8; // set RS
     for (uint i = 0; i < w * h; i++)
     {
@@ -191,32 +191,23 @@ void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
 
 void clear(ushort color)
 {
-    fill_rect(0, 0, Width - 1, Height - 1, color);
-    /*set_window(0, 0, Width - 1, Height - 1);
-    GPIOC.ODR |= 1 << 10; // set RS
-    for (uint i = 0; i < Width * Height; i++)
-    {
-        write(color);
-    }*/
+    fill_rect(0, 0, Width, Height, color);
 }
 
 void set_window(ushort x0, ushort y0, ushort x1, ushort y1)
 {
-    //set_reg(lcddev.setxcmd);
     set_reg(0x2A);
     set_data(x0 >> 8);
     set_data(x0 & 0xff);
     set_data(x1 >> 8);
     set_data(x1 & 0xff);
 
-    //set_reg(lcddev.setycmd);
     set_reg(0x2B);
     set_data(y0 >> 8);
     set_data(y0 & 0xff);
     set_data(y1 >> 8);
     set_data(y1 & 0xff);
 
-    //set_reg(lcddev.wramcmd);
     set_reg(0x2C);
 }
 
@@ -227,23 +218,19 @@ void set_cursor(ushort x, ushort y)
 
 void set_orientation(Orientation orientation)
 {
-    //lcddev.setxcmd = 0x2A;
-    //lcddev.setycmd = 0x2B;
-    //lcddev.wramcmd = 0x2C;
-
     switch (orientation)
     {
     case Orientation.portrait:
-        write_reg(0x36, (1 << 6) | (1 << 3));//0 degree MY=0,MX=0,MV=0,ML=0,BGR=1,MH=0
+        write_reg(0x36, (1 << 6) | (1 << 3)); //0 degree MY=0,MX=0,MV=0,ML=0,BGR=1,MH=0
         break;
     case Orientation.landscape:
-        write_reg(0x36, (1 << 3) | (1 << 4) | (1 << 5));//90 degree MY=0,MX=1,MV=1,ML=1,BGR=1,MH=0
+        write_reg(0x36, (1 << 3) | (1 << 4) | (1 << 5)); //90 degree MY=0,MX=1,MV=1,ML=1,BGR=1,MH=0
         break;
     case Orientation.reverse_portrait:
-        write_reg(0x36, (1 << 3) | (1 << 7));//180 degree MY=1,MX=1,MV=0,ML=0,BGR=1,MH=0
+        write_reg(0x36, (1 << 3) | (1 << 7)); //180 degree MY=1,MX=1,MV=0,ML=0,BGR=1,MH=0
         break;
     case Orientation.reverse_landscape:
-        write_reg(0x36, (1 << 3) | (1 << 5) | (1 << 6) | (1 << 7));//270 degree MY=1,MX=0,MV=1,ML=0,BGR=1,MH=0
+        write_reg(0x36, (1 << 3) | (1 << 5) | (1 << 6) | (1 << 7)); //270 degree MY=1,MX=0,MV=1,ML=0,BGR=1,MH=0
         break;
     default:
         break;
