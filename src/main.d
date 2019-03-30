@@ -17,7 +17,6 @@ extern(C) int main()
 {
     delay.init();
     lcd.init();
-    //pong.init();
 
     uint seed = void;
     while(1)
@@ -36,24 +35,12 @@ extern(C) int main()
             lcd.fill_rect(startx, starty, width, height, color);
         }*/
 
-        //lcd.set_orientation(lcd.Orientation.landscape);
-        /*int x = 0;
-        while(1)
-        {
-            lcd.clear(lcd.Color.black);
-            lcd.fill_rect(0, 0, 10, 100, lcd.Color.white);
-            lcd.fill_rect(200, cast(ushort)(20+x), 10, 10, lcd.Color.white);
-            x++;
-            x = x % 128;
-        }*/
         Pong pong;
         pong.reset();
         
         while(1)
         {
             pong.update();
-            //pong.draw();
-            //pong.drawBack();
             delay.mili(15);
         }
     }

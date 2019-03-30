@@ -181,7 +181,7 @@ void draw_pixel(ushort x, ushort y, ushort color)
 
 void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
 {
-    set_window(x, y, cast(ushort)(x + w), cast(ushort)(y + h));
+    set_window(x, y, cast(ushort)(x + w - 1), cast(ushort)(y + h - 1));
     GPIOC.ODR |= 1 << 8; // set RS
     for (uint i = 0; i < w * h; i++)
     {

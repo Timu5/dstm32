@@ -7,7 +7,7 @@ extern(C) void __aeabi_memcpy(void* dest, void* src, size_t n)
 {
     for(size_t i = 0; i < n; i++)
     {
-        *cast(byte*)src = *cast(byte*)dest;
+       *cast(byte*)dest = *cast(byte*)src;
         dest++;
         src++;
     }
@@ -16,6 +16,8 @@ extern(C) void __aeabi_memcpy(void* dest, void* src, size_t n)
 struct Pong
 {
     bool pause = true;
+    
+    uint seed = 123;
 
     int player = 200 * 16;
     int enemy = 200 * 16;
@@ -25,8 +27,8 @@ struct Pong
 
     int ballX = (480 / 2 - 10) * 16;
     int ballY = (320 / 2 - 10) * 16;
-    int ballSpeedX = 5 * 16;
-    int ballSpeedY = 5 * 16;
+    int ballSpeedX = 20 * 16;
+    int ballSpeedY = 20 * 16;
 
     void update()
     {
@@ -48,8 +50,8 @@ struct Pong
 
         enemy = ballY - 50 * 16;
         player = ballY - 50 * 16;
-        enemy = (enemy < 0) ? 0 : ((enemy/16) > (320 - 100) ? (320 - 100) * 16 : enemy);
-        player = (player < 0) ? 0 : ((player/16) > (320 - 100) ? (320 - 100) * 16 : player);
+        //enemy = (enemy < 0) ? 0 : ((enemy/16) > (320 - 100) ? (320 - 100) * 16 : enemy);
+        //player = (player < 0) ? 0 : ((player/16) > (320 - 100) ? (320 - 100) * 16 : player);
 
         if(ballX < 10 * 16)
         {
@@ -59,7 +61,7 @@ struct Pong
                 ballSpeedX = -ballSpeedX;
 
                 int delta = player/16 + 50 - ballY /16+ 10;
-                ballSpeedY = delta * 2;
+                ballSpeedY = delta * 2 + random(&seed)%128;
             }
             else
             {     
@@ -75,7 +77,7 @@ struct Pong
                 ballSpeedX = -ballSpeedX;
 
                 int delta = enemy/16 + 50 - ballY/16 + 10;
-                ballSpeedY = delta * 2;
+                ballSpeedY = delta * 2 + random(&seed)%128;
             }
             else
             {
@@ -100,16 +102,16 @@ struct Pong
     void drawBack()
     {
         lcd.fill_rect(0,0,320,480, lcd.Color.black);
-
-        for(int i = 0; i < 12; i++)
-            drawRect(480/2-5, i * 25, 10, 10); 
-
-        drawNum(480/2-150, 20, playerScore);
-        drawNum(480/2+50, 20, enemyScore);
     }
 
     void draw()
     {
+        for(int i = 0; i < 13; i++)
+            drawRect(480/2-5, i * 25, 10, 10); 
+
+        drawNum(480/2-150, 20, playerScore);
+        drawNum(480/2+50, 20, enemyScore);
+
         drawRect(10, player / 16, 20, 100);
         drawRect(480-20-10, enemy / 16, 20, 100);
 
