@@ -3,34 +3,36 @@ module lcd;
 import stm32f4xx;
 static import delay;
 
-enum Width = 320;
-enum Height = 480;
+enum width = 320; /// Width in pixels of LCD screen
+enum height = 480; /// Height in pixels of LCD screen
 
+/// Enum representing 16bits colors
 enum Color
 {
     white = 0xFFFF,
-    black = 0x0000
-    // TODO
+    black = 0x0000 // TODO
 }
 
+/// LCD display orientation
 enum Orientation
 {
-    portrait, 
+    portrait,
     landscape,
     reverse_portrait,
     reverse_landscape
 }
 
+/// This function is setting up hardware for LCD control and initilize LCD module itself 
 void init()
 {
     RCC.AHB1ENR |= RCC_AHB1Periph_GPIOE | RCC_AHB1Periph_GPIOC; // Enable power to GPIOE and GPIOC
-    
+
     GPIOC.MODER |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2)); // pins 7,8,9,10 as output
     GPIOC.PUPDR |= (1 << (7 * 2)) | (1 << (8 * 2)) | (1 << (9 * 2)) | (1 << (10 * 2)); // pull up
-    
+
     GPIOE.MODER = 0x55555555; // all pins as output
     GPIOE.PUPDR = 0x55555555; // pull up
-    
+
     reset();
 
     //6
@@ -138,6 +140,7 @@ void init()
     clear(Color.white);
 }
 
+/// Force reset LCD module
 void reset()
 {
     GPIOC.ODR &= ~(1 << 10); // clear RST
@@ -146,39 +149,45 @@ void reset()
     delay.mili(50);
 }
 
+/// Write data to LCD databus
 void write(ushort data)
 {
     GPIOC.ODR &= ~(1 << 9); // clear CS 
     GPIOE.ODR = data;
     GPIOC.ODR &= ~(1 << 7); // clear WR 
-    GPIOC.ODR |= 1 << 7;    // set WR 
-    GPIOC.ODR |= 1 << 9;    // set CS 
+    GPIOC.ODR |= 1 << 7; // set WR 
+    GPIOC.ODR |= 1 << 9; // set CS 
 }
 
+/// Set LCD register
 void set_reg(ushort data)
 {
     GPIOC.ODR &= ~(1 << 8); // clear RS
     write(data);
 }
 
+/// Set LCD data
 void set_data(ushort data)
 {
     GPIOC.ODR |= 1 << 8; // set RS
     write(data);
 }
 
+/// Write data to LCD register
 void write_reg(ushort reg, ushort data)
 {
     set_reg(reg);
     set_data(data);
 }
 
+/// Draw single pixel into LCD buffer
 void draw_pixel(ushort x, ushort y, ushort color)
 {
     set_cursor(x, y);
     set_data(color);
 }
 
+/// Fill rectangle area with given color
 void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
 {
     set_window(x, y, cast(ushort)(x + w - 1), cast(ushort)(y + h - 1));
@@ -189,11 +198,13 @@ void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
     }
 }
 
+/// Clear LCD to given color
 void clear(ushort color)
 {
-    fill_rect(0, 0, Width, Height, color);
+    fill_rect(0, 0, width, height, color);
 }
 
+/// Set drawing window
 void set_window(ushort x0, ushort y0, ushort x1, ushort y1)
 {
     set_reg(0x2A);
@@ -211,11 +222,13 @@ void set_window(ushort x0, ushort y0, ushort x1, ushort y1)
     set_reg(0x2C);
 }
 
+// Set drawing cursor. Cursor is nothing else than drawing window with 1x1 size
 void set_cursor(ushort x, ushort y)
 {
     set_window(x, y, x, y);
 }
 
+// Set LCD orientation
 void set_orientation(Orientation orientation)
 {
     switch (orientation)
