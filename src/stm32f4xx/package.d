@@ -12,3 +12,4 @@ public import stm32f4xx.spi;
 public import stm32f4xx.tim;
 public import stm32f4xx.usart;
 public import stm32f4xx.rng;
+public import stm32f4xx.dac;

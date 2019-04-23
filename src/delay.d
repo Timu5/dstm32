@@ -5,6 +5,7 @@ import stm32f4xx;
 /// Number of miliseconds since timer initialization
 __gshared __IO!uint ticks;
 
+/// SysTick callback handler
 extern (C) void SysTick_Handler()
 {
     ticks += 1;

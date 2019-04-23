@@ -32,7 +32,7 @@ struct ADC_TypeDef
 
 struct ADC_Common_TypeDef
 {
-  __IO!uint CSR;    /*!< ADC Common status register,                  Address offset: ADC1 base address + 0x300 */
+  __IO!uint CSR;    /// ADC Common status register,                  Address offset: ADC1 base address + 0x300
   __IO!uint CCR;    /*!< ADC common control register,                 Address offset: ADC1 base address + 0x304 */
   __IO!uint CDR;    /*!< ADC common regular data register for dual
                         AND triple modes,                            Address offset: ADC1 base address + 0x308 */

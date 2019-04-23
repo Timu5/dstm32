@@ -3,6 +3,7 @@ module main;
 import stm32f4xx;
 static import lcd;
 static import delay;
+static import synth;
 import pong;
 
 uint random(uint* seed)
@@ -20,6 +21,7 @@ extern (C) int main()
 
     Pong pong;
     pong.reset();
+    synth.init();
 
     while (1)
     {

@@ -39,6 +39,12 @@ struct RCC_TypeDef
 enum RCC_BASE = AHB1PERIPH_BASE + 0x3800;
 enum RCC = cast(RCC_TypeDef*) RCC_BASE;
 
+enum RCC_AHB1Periph_GPIOA = 0x1;
+enum RCC_AHB1Periph_GPIOB = 0x2;
 enum RCC_AHB1Periph_GPIOC = 0x4;
 enum RCC_AHB1Periph_GPIOD = 0x8;
 enum RCC_AHB1Periph_GPIOE = 0x10;
+
+enum RCC_APB1Periph_DAC = 0x20000000;
+
+enum RCC_APB1Periph_TIM2 = 0x00000001;

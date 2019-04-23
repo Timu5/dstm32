@@ -45,3 +45,6 @@ struct TIM_TypeDef
   __IO!ushort OR; /*!< TIM option register,                 Address offset: 0x50 */
   ushort RESERVED14; /*!< Reserved, 0x52                                            */
 }
+
+enum TIM2_BASE = APB1PERIPH_BASE + 0x0000;
+enum TIM2 = (cast(TIM_TypeDef *) TIM2_BASE);

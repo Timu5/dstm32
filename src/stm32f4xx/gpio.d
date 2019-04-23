@@ -4,7 +4,7 @@ import stm32f4xx.core;
 
 struct GPIO_TypeDef
 {
-	__IO!uint MODER; /*!< GPIO port mode register,               Address offset: 0x00      */
+	__IO!uint MODER; /// GPIO port mode register,               Address offset: 0x00
 	__IO!uint OTYPER; /*!< GPIO port output type register,        Address offset: 0x04      */
 	__IO!uint OSPEEDR; /*!< GPIO port output speed register,       Address offset: 0x08      */
 	__IO!uint PUPDR; /*!< GPIO port pull-up/pull-down register,  Address offset: 0x0C      */
