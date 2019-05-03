@@ -277,3 +277,13 @@ enum SysTick = (cast(SysTick_Type*) SysTick_BASE); /// SysTick configuration str
 enum NVIC = (cast(NVIC_Type*) NVIC_BASE); /// NVIC configuration struct
 
 extern (C) extern __gshared uint SystemCoreClock;
+
+extern (C) void __aeabi_memcpy(void* dest, void* src, size_t n)
+{
+    for (size_t i = 0; i < n; i++)
+    {
+        *cast(byte*) dest = *cast(byte*) src;
+        dest++;
+        src++;
+    }
+}
