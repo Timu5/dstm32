@@ -10,8 +10,8 @@ struct GPIO_TypeDef
 	__IO!uint PUPDR; /** GPIO port pull-up/pull-down register,  Address offset: 0x0C      */
 	__IO!uint IDR; /** GPIO port input data register,         Address offset: 0x10      */
 	__IO!uint ODR; /** GPIO port output data register,        Address offset: 0x14      */
-	__IO!uint BSRRL; /** GPIO port bit set/reset low register,  Address offset: 0x18      */
-	__IO!uint BSRRH; /** GPIO port bit set/reset high register, Address offset: 0x1A      */
+	__IO!ushort BSRRL; /** GPIO port bit set/reset low register,  Address offset: 0x18      */
+	__IO!ushort BSRRH; /** GPIO port bit set/reset high register, Address offset: 0x1A      */
 	__IO!uint LCKR; /** GPIO port configuration lock register, Address offset: 0x1C      */
 	__IO!uint[2] AFR; /** GPIO alternate function registers,     Address offset: 0x20-0x24 */
 }
