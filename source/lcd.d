@@ -36,107 +36,107 @@ void init()
     reset();
 
     //6
-    set_reg(0XF1);
-    set_data(0x36);
-    set_data(0x04);
-    set_data(0x00);
-    set_data(0x3C);
-    set_data(0X0F);
-    set_data(0x8F);
+    setReg(0XF1);
+    setData(0x36);
+    setData(0x04);
+    setData(0x00);
+    setData(0x3C);
+    setData(0X0F);
+    setData(0x8F);
 
     //9
-    set_reg(0XF2);
-    set_data(0x18);
-    set_data(0xA3);
-    set_data(0x12);
-    set_data(0x02);
-    set_data(0XB2);
-    set_data(0x12);
-    set_data(0xFF);
-    set_data(0x10);
-    set_data(0x00);
+    setReg(0XF2);
+    setData(0x18);
+    setData(0xA3);
+    setData(0x12);
+    setData(0x02);
+    setData(0XB2);
+    setData(0x12);
+    setData(0xFF);
+    setData(0x10);
+    setData(0x00);
 
     //2
-    set_reg(0XF8);
-    set_data(0x21);
-    set_data(0x04);
+    setReg(0XF8);
+    setData(0x21);
+    setData(0x04);
 
     //2
-    set_reg(0XF9);
-    set_data(0x00);
-    set_data(0x08);
+    setReg(0XF9);
+    setData(0x00);
+    setData(0x08);
 
     //1
-    set_reg(0x36);
-    set_data(0x08); // set memorty access
+    setReg(0x36);
+    setData(0x08); // set memorty access
 
-    //set_reg(0xB4);
-    //set_data(0x00);
+    //setReg(0xB4);
+    //setData(0x00);
 
     //1
-    set_reg(0xC1);
-    set_data(0x41); // set power control 2
+    setReg(0xC1);
+    setData(0x41); // set power control 2
 
     //4
-    set_reg(0xC5);
-    set_data(0x00);
-    set_data(0x91); // VCOM voltage
-    set_data(0x80);
-    set_data(0x00);
+    setReg(0xC5);
+    setData(0x00);
+    setData(0x91); // VCOM voltage
+    setData(0x80);
+    setData(0x00);
 
     //15
-    set_reg(0xE0); // set gamma
-    set_data(0x0F);
-    set_data(0x1F);
-    set_data(0x1C);
-    set_data(0x0C);
-    set_data(0x0F);
-    set_data(0x08);
-    set_data(0x48);
-    set_data(0x98);
-    set_data(0x37);
-    set_data(0x0A);
-    set_data(0x13);
-    set_data(0x04);
-    set_data(0x11);
-    set_data(0x0D);
-    set_data(0x00);
+    setReg(0xE0); // set gamma
+    setData(0x0F);
+    setData(0x1F);
+    setData(0x1C);
+    setData(0x0C);
+    setData(0x0F);
+    setData(0x08);
+    setData(0x48);
+    setData(0x98);
+    setData(0x37);
+    setData(0x0A);
+    setData(0x13);
+    setData(0x04);
+    setData(0x11);
+    setData(0x0D);
+    setData(0x00);
 
     //15
-    set_reg(0xE1); // set negative gamma
-    set_data(0x0F);
-    set_data(0x32);
-    set_data(0x2E);
-    set_data(0x0B);
-    set_data(0x0D);
-    set_data(0x05);
-    set_data(0x47);
-    set_data(0x75);
-    set_data(0x37);
-    set_data(0x06);
-    set_data(0x10);
-    set_data(0x03);
-    set_data(0x24);
-    set_data(0x20);
-    set_data(0x00);
+    setReg(0xE1); // set negative gamma
+    setData(0x0F);
+    setData(0x32);
+    setData(0x2E);
+    setData(0x0B);
+    setData(0x0D);
+    setData(0x05);
+    setData(0x47);
+    setData(0x75);
+    setData(0x37);
+    setData(0x06);
+    setData(0x10);
+    setData(0x03);
+    setData(0x24);
+    setData(0x20);
+    setData(0x00);
 
     //1
-    set_reg(0x3A);
-    set_data(0x55); // set 16bits / piexel
+    setReg(0x3A);
+    setData(0x55); // set 16bits / piexel
 
     //0
-    set_reg(0x11); // load default registers
+    setReg(0x11); // load default registers
 
     //1
-    set_reg(0x36);
-    set_data(0x28); // set memorty access
+    setReg(0x36);
+    setData(0x28); // set memorty access
 
     delay.mili(120);
 
     //0
-    set_reg(0x29); // display on
+    setReg(0x29); // display on
 
-    set_orientation(Orientation.portrait);
+    setOrientation(Orientation.portrait);
     clear(Color.white);
 }
 
@@ -152,45 +152,45 @@ void reset()
 /// Write data to LCD databus
 void write(ushort data)
 {
-    GPIOC.ODR &= ~(1 << 9); // clear CS 
+    GPIOC.ODR &= ~(1 << 9); // clear CS
     GPIOE.ODR = data;
-    GPIOC.ODR &= ~(1 << 7); // clear WR 
-    GPIOC.ODR |= 1 << 7; // set WR 
-    GPIOC.ODR |= 1 << 9; // set CS 
+    GPIOC.ODR &= ~(1 << 7); // clear WR
+    GPIOC.ODR |= 1 << 7; // set WR
+    GPIOC.ODR |= 1 << 9; // set CS
 }
 
 /// Set LCD register
-void set_reg(ushort data)
+void setReg(ushort data)
 {
     GPIOC.ODR &= ~(1 << 8); // clear RS
     write(data);
 }
 
 /// Set LCD data
-void set_data(ushort data)
+void setData(ushort data)
 {
     GPIOC.ODR |= 1 << 8; // set RS
     write(data);
 }
 
 /// Write data to LCD register
-void write_reg(ushort reg, ushort data)
+void writeReg(ushort reg, ushort data)
 {
-    set_reg(reg);
-    set_data(data);
+    setReg(reg);
+    setData(data);
 }
 
 /// Draw single pixel into LCD buffer
-void draw_pixel(ushort x, ushort y, ushort color)
+void drawPixel(ushort x, ushort y, ushort color)
 {
-    set_cursor(x, y);
-    set_data(color);
+    setCursor(x, y);
+    setData(color);
 }
 
 /// Fill rectangle area with given color
-void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
+void fillRect(ushort x, ushort y, ushort w, ushort h, ushort color)
 {
-    set_window(x, y, cast(ushort)(x + w - 1), cast(ushort)(y + h - 1));
+    setWindow(x, y, cast(ushort)(x + w - 1), cast(ushort)(y + h - 1));
     GPIOC.ODR |= 1 << 8; // set RS
     for (uint i = 0; i < w * h; i++)
     {
@@ -201,49 +201,49 @@ void fill_rect(ushort x, ushort y, ushort w, ushort h, ushort color)
 /// Clear LCD to given color
 void clear(ushort color)
 {
-    fill_rect(0, 0, width, height, color);
+    fillRect(0, 0, width, height, color);
 }
 
 /// Set drawing window
-void set_window(ushort x0, ushort y0, ushort x1, ushort y1)
+void setWindow(ushort x0, ushort y0, ushort x1, ushort y1)
 {
-    set_reg(0x2A);
-    set_data(x0 >> 8);
-    set_data(x0 & 0xff);
-    set_data(x1 >> 8);
-    set_data(x1 & 0xff);
+    setReg(0x2A);
+    setData(x0 >> 8);
+    setData(x0 & 0xff);
+    setData(x1 >> 8);
+    setData(x1 & 0xff);
 
-    set_reg(0x2B);
-    set_data(y0 >> 8);
-    set_data(y0 & 0xff);
-    set_data(y1 >> 8);
-    set_data(y1 & 0xff);
+    setReg(0x2B);
+    setData(y0 >> 8);
+    setData(y0 & 0xff);
+    setData(y1 >> 8);
+    setData(y1 & 0xff);
 
-    set_reg(0x2C);
+    setReg(0x2C);
 }
 
 // Set drawing cursor. Cursor is nothing else than drawing window with 1x1 size
-void set_cursor(ushort x, ushort y)
+void setCursor(ushort x, ushort y)
 {
-    set_window(x, y, x, y);
+    setWindow(x, y, x, y);
 }
 
 // Set LCD orientation
-void set_orientation(Orientation orientation)
+void setOrientation(Orientation orientation)
 {
     switch (orientation)
     {
     case Orientation.portrait:
-        write_reg(0x36, (1 << 6) | (1 << 3)); //0 degree MY=0,MX=0,MV=0,ML=0,BGR=1,MH=0
+        writeReg(0x36, (1 << 6) | (1 << 3)); //0 degree MY=0,MX=0,MV=0,ML=0,BGR=1,MH=0
         break;
     case Orientation.landscape:
-        write_reg(0x36, (1 << 3) | (1 << 4) | (1 << 5)); //90 degree MY=0,MX=1,MV=1,ML=1,BGR=1,MH=0
+        writeReg(0x36, (1 << 3) | (1 << 4) | (1 << 5)); //90 degree MY=0,MX=1,MV=1,ML=1,BGR=1,MH=0
         break;
     case Orientation.reverse_portrait:
-        write_reg(0x36, (1 << 3) | (1 << 7)); //180 degree MY=1,MX=1,MV=0,ML=0,BGR=1,MH=0
+        writeReg(0x36, (1 << 3) | (1 << 7)); //180 degree MY=1,MX=1,MV=0,ML=0,BGR=1,MH=0
         break;
     case Orientation.reverse_landscape:
-        write_reg(0x36, (1 << 3) | (1 << 5) | (1 << 6) | (1 << 7)); //270 degree MY=1,MX=0,MV=1,ML=0,BGR=1,MH=0
+        writeReg(0x36, (1 << 3) | (1 << 5) | (1 << 6) | (1 << 7)); //270 degree MY=1,MX=0,MV=1,ML=0,BGR=1,MH=0
         break;
     default:
         break;
