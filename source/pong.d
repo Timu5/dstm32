@@ -1,23 +1,13 @@
 module pong;
 
 static import lcd;
+static import synth;
+import random;
 import main;
-
-extern (C) void __aeabi_memcpy(void* dest, void* src, size_t n)
-{
-    for (size_t i = 0; i < n; i++)
-    {
-        *cast(byte*) dest = *cast(byte*) src;
-        dest++;
-        src++;
-    }
-}
 
 struct Pong
 {
     bool pause = true;
-
-    uint seed = 123;
 
     int player = 200 * 16;
     int enemy = 200 * 16;
@@ -32,6 +22,8 @@ struct Pong
 
     void update()
     {
+        if (synth.beep != 0)
+            synth.beep--;
         //if(pause) return;
 
         /*const char * keys = SDL_GetKeyboardState(NULL);
@@ -49,7 +41,7 @@ struct Pong
         ballY += ballSpeedY;
 
         enemy = ballY - 50 * 16;
-        player = ballY - 50 * 16;
+        //player = ballY - 50 * 16;
         //enemy = (enemy < 0) ? 0 : ((enemy/16) > (320 - 100) ? (320 - 100) * 16 : enemy);
         //player = (player < 0) ? 0 : ((player/16) > (320 - 100) ? (320 - 100) * 16 : player);
 
@@ -61,7 +53,8 @@ struct Pong
                 ballSpeedX = -ballSpeedX;
 
                 int delta = player / 16 + 50 - ballY / 16 + 10;
-                ballSpeedY = delta * 2 + random(&seed) % 128;
+                ballSpeedY = delta * 2 + random.random() % 128;
+                synth.beep = 2;
             }
             else
             {
@@ -77,7 +70,8 @@ struct Pong
                 ballSpeedX = -ballSpeedX;
 
                 int delta = enemy / 16 + 50 - ballY / 16 + 10;
-                ballSpeedY = delta * 2 + random(&seed) % 128;
+                ballSpeedY = delta * 2 + random.random() % 128;
+                synth.beep = 2;
             }
             else
             {
@@ -89,11 +83,13 @@ struct Pong
         {
             ballY = 0;
             ballSpeedY = -ballSpeedY;
+            synth.beep = 2;
         }
         if (ballY > (320 - 20) * 16)
         {
             ballY = (320 - 20) * 16;
             ballSpeedY = -ballSpeedY;
+            synth.beep = 2;
         }
 
         draw();
@@ -101,7 +97,7 @@ struct Pong
 
     void drawBack()
     {
-        lcd.fill_rect(0, 0, 320, 480, lcd.Color.black);
+        lcd.fillRect(0, 0, 320, 480, lcd.Color.black);
     }
 
     void draw()
@@ -128,7 +124,7 @@ struct Pong
 
     void drawRect(int x, int y, int w, int h, lcd.Color color = lcd.Color.white)
     {
-        lcd.fill_rect(cast(ushort) y, cast(ushort) x, cast(ushort) h,
+        lcd.fillRect(cast(ushort) y, cast(ushort) x, cast(ushort) h,
                 cast(ushort) w, cast(ushort) color);
     }
 
