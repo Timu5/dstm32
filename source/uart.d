@@ -14,17 +14,17 @@ void init()
 
     GPIOA.AFR[0] |= (7 << (2 * 4)) | (7 << (3 * 4));
 
-    USART2.CR1 |= USART_Mode_Rx |  USART_Mode_Tx;
+    USART2.CR1 |= USART_Mode_Rx | USART_Mode_Tx;
 
-    USART2.BRR = (SystemCoreClock / 115_200) >> 2;
+    USART2.BRR = (SystemCoreClock / 115_200) / 4;
 
-	USART2.CR1 |= 0x2000; // enable usart
+    USART2.CR1 |= 0x2000; // enable usart
 }
 
 /// Send single byte to usart
 void send(ubyte b)
 {
-    while(!(USART2.SR.load() & 0x40))
+    while (!(USART2.SR.load() & 0x40))
     {
     }
     USART2.DR = b;
@@ -33,7 +33,7 @@ void send(ubyte b)
 /// Send string to usart
 void send(string str)
 {
-    for(int i = 0; i < str.length; i++)
+    for (int i = 0; i < str.length; i++)
     {
         send(str[i]);
     }
@@ -42,8 +42,8 @@ void send(string str)
 /// Receive single byte
 ubyte recv()
 {
-    while(!(USART2.SR.load() & 0x20))
+    while (!(USART2.SR.load() & 0x20))
     {
     }
-    return cast(ubyte) (USART2.DR.load() & 0xFF);
+    return cast(ubyte)(USART2.DR.load() & 0xFF);
 }

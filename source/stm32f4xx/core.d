@@ -147,7 +147,7 @@ enum BKPSRAM_BB_BASE = (0x42024000); /// Backup SRAM(4 KB) base address in the b
 enum SRAM_BASE = SRAM1_BASE;
 enum SRAM_BB_BASE = SRAM1_BB_BASE;
 
-/// Peripheral memory map
+// Peripheral memory map
 enum APB1PERIPH_BASE = PERIPH_BASE;
 enum APB2PERIPH_BASE = (PERIPH_BASE + 0x00010000);
 enum AHB1PERIPH_BASE = (PERIPH_BASE + 0x00020000);
@@ -171,7 +171,7 @@ struct NVIC_Type
     uint[644] RESERVED5;
     __O!uint STIR; /// Offset: 0xE00 ( /W)  Software Trigger Interrupt Register
 
-    void SetPriority(IRQn IRQn, uint priority)
+    void setPriority(IRQn IRQn, uint priority)
     {
         if (IRQn < 0)
         {
@@ -255,17 +255,17 @@ struct SysTick_Type
     __IO!uint VAL; /// Offset: 0x008 (R/W)  SysTick Current Value Register
     __I!uint CALIB; /// Offset: 0x00C (R/ )  SysTick Calibration Register
 
-    void Config(uint ticks)
+    void config(uint ticks)
     {
-        SysTick.LOAD = (ticks & SysTick_LOAD_RELOAD_Msk) - 1;
-        NVIC.SetPriority(IRQn.SysTick, (1 << __NVIC_PRIO_BITS) - 1); // set Priority for Cortex-M0 System Interrupts
+        SysTick.LOAD = (ticks & 0xFFFFFF) - 1;
+        NVIC.setPriority(IRQn.SysTick, (1 << __NVIC_PRIO_BITS) - 1); // set Priority for Cortex-M0 System Interrupts
         SysTick.VAL = 0; // Load the SysTick Counter Value
         SysTick.CTRL = (1 << 2) | (1 << 1) | (1 << 0); // Enable SysTick IRQ and SysTick Timer
     }
 }
 
-enum SysTick_LOAD_RELOAD_Pos = 0;
-enum SysTick_LOAD_RELOAD_Msk = (0xFFFFFF << SysTick_LOAD_RELOAD_Pos);
+//enum SysTick_LOAD_RELOAD_Pos = 0;
+//enum SysTick_LOAD_RELOAD_Msk = (0xFFFFFF << SysTick_LOAD_RELOAD_Pos);
 
 enum SCS_BASE = (0xE000E000); /// System Control Space Base Address
 enum SysTick_BASE = (SCS_BASE + 0x0010); /// SysTick Base Address

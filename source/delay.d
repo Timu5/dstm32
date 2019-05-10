@@ -15,7 +15,7 @@ extern (C) void SysTick_Handler()
 void init()
 {
     ticks = 0;
-    SysTick.Config(SystemCoreClock / 1000);
+    SysTick.config(SystemCoreClock / 1000);
 }
 
 /// Wait for given number of miliseconds
