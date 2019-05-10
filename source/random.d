@@ -24,12 +24,12 @@ uint rrandom()
 {
     RNG.CR |= (1 << 2); // enable random generator
 
-    while(RNG.SR & 1)
+    while (RNG.SR.load() & 1)
     {
         // wait for random number to generate
     }
 
-    immutable uint result = RNG.DR;
+    immutable uint result = RNG.DR.load();
 
     RNG.CR &= ~(1 << 2); // disable random generator
 
