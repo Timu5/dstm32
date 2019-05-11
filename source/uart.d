@@ -47,3 +47,10 @@ ubyte recv()
     }
     return cast(ubyte)(USART2.DR.load() & 0xFF);
 }
+
+void puthex(ubyte b)
+{
+    string table = "0123456789ABCDEF";
+    send(table[b>>4]);
+    send(table[b&0xf]);
+}
