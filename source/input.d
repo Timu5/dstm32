@@ -13,7 +13,7 @@ enum Button
 void init()
 {
     RCC.AHB1ENR |= RCC_AHB1Periph_GPIOD; // power up gpiod
-    GPIOD.PUPDR |= (1 << (0 * 2)) | (1 << (1 * 2)); // enable pull up
+    GPIOD.PUPDR |= (1 << (0 * 2)) | (1 << (1 * 2)) | (1 << (1 * 3)) | (1 << (1 * 4)); // enable pull up
 }
 
 bool getButton(Button button)
