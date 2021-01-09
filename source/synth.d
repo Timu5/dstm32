@@ -33,6 +33,7 @@ extern(C) void TIM2_IRQHandler()
             DAC.DHR12R2 = sample > 4056 ? 4056 : sample;
         else
             DAC.DHR12R2 = 0;
+        
         sampleCounter += 1; 
 
         // Clears the TIM2 interrupt pending bit

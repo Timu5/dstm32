@@ -2,9 +2,11 @@ module pong;
 
 static import lcd;
 static import synth;
+static import input;
 import random;
 import main;
 
+/// Classic Pong game
 struct Pong
 {
     bool pause = true;
@@ -24,26 +26,31 @@ struct Pong
     {
         if (synth.beep != 0)
             synth.beep--;
-        //if(pause) return;
 
-        /*const char * keys = SDL_GetKeyboardState(NULL);
-        if(keys[SDL_SCANCODE_W])
-            player -= 5;
-        if(keys[SDL_SCANCODE_S])
-            player += 5;
-        if(keys[SDL_SCANCODE_UP])
-            enemy -= 5;
-        if(keys[SDL_SCANCODE_DOWN])
-            enemy += 5;*/
-        clear();
+clear();
+
+        if(input.getButton(input.Button.up))
+        {
+            pause = false;
+            player -= 50;
+        }
+        if(input.getButton(input.Button.down))
+        {
+            pause = false;
+            player += 50;
+        }
+
+        if(pause) return;
+
+        
 
         ballX += ballSpeedX;
         ballY += ballSpeedY;
 
         enemy = ballY - 50 * 16;
         //player = ballY - 50 * 16;
-        //enemy = (enemy < 0) ? 0 : ((enemy/16) > (320 - 100) ? (320 - 100) * 16 : enemy);
-        //player = (player < 0) ? 0 : ((player/16) > (320 - 100) ? (320 - 100) * 16 : player);
+        enemy = (enemy < 0) ? 0 : ((enemy/16) > (320 - 100) ? (320 - 100) * 16 : enemy);
+        player = (player < 0) ? 0 : ((player/16) > (320 - 100) ? (320 - 100) * 16 : player);
 
         if (ballX < 10 * 16)
         {
@@ -60,6 +67,7 @@ struct Pong
             {
                 reset();
                 enemyScore++;
+                
             }
         }
         if (ballX > (480 - 10 - 20) * 16)
@@ -77,6 +85,7 @@ struct Pong
             {
                 reset();
                 playerScore++;
+                
             }
         }
         if (ballY < 0)
